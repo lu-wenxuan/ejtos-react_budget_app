@@ -25,7 +25,9 @@ export const AppReducer = (state, action) => {
                     ...state,
                 };
             } else {
-                alert("Cannot increase the allocation! Out of funds");
+                console.log(total_budget)
+
+                alert(`The value cannot exceed remaining fund ${state.currency} ${state.budget - total_budget + action.payload.cost}`);
                 return {
                     ...state
                 }
@@ -58,12 +60,35 @@ export const AppReducer = (state, action) => {
                 budget
             };
         case 'SET_BUDGET':
-            action.type = "DONE";
-            state.budget = action.payload;
 
+            const curr_Expenses = state.expenses.reduce((total, item) => {
+                return (total = total + item.cost);
+            }, 0);
+            
+            console.log(curr_Expenses)
+
+            action.type = "DONE";
+
+            if (action.payload <= 20000 && action.payload>=curr_Expenses) {
+                state.budget = action.payload;
+                return {
+                    ...state,
+                };
+            } else if(action.payload<curr_Expenses) {
+                alert("You cannot reduce the budget value lower than the spending")
+                return {
+                    ...state,
+                };
+            } else if(action.payload > 20000){
+                alert(`The value cannot exceed remaining funds ${state.currency}${state.budget - curr_Expenses}`)
+                return {
+                    ...state,
+                };
+            }
             return {
                 ...state,
             };
+
         case 'CHG_CURRENCY':
             action.type = "DONE";
             state.currency = action.payload;

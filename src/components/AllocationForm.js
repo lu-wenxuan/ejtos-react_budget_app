@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 
 const AllocationForm = () => {
-    const { expenses, remaining } = useContext(AppContext);
-    const { dispatch } = useContext(AppContext);
+    const { expenses, dispatch, currency } = useContext(AppContext);
     const [cost, setCost] = useState('');
     const [name, setName] = useState('');
     const [allocation, setAllocation] = useState('');
@@ -32,13 +31,6 @@ const AllocationForm = () => {
             name: name,
             cost: parseInt(cost),
         }
-
-        if (allocation === 'ADD_EXPENSE') {
-            if (cost > remaining) {
-                console.log('go')
-            }
-        }
-
 
 
         dispatch({
@@ -73,6 +65,7 @@ const AllocationForm = () => {
                     </div>
                 </div>
                 <div className="col">
+                    <span className="m-2">{currency}</span>
                     <input type="number" onChange={handleCostChange} />
                 </div>
                 <div className="col">
